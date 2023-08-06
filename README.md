@@ -15,6 +15,8 @@ Tested on `Ubuntu 20.04.6 LTS x86_64` with `Intel Xeon Platinum 8272` CPU.
 
 ### OpusEncoder
 
+**[View online](https://skdhg.github.io/node-opus-benchmark/results/opus-encoder-benchmark.chart.html)**
+
 ```js
 Running "OpusEncoder Benchmark" suite...
 Progress: 100%
@@ -34,6 +36,8 @@ Finished 3 cases!
 ```
 
 ### OpusDecoder
+
+**[View online](https://skdhg.github.io/node-opus-benchmark/results/opus-decoder-benchmark.chart.html)**
 
 ```js
 Running "OpusDecoder Benchmark" suite...
