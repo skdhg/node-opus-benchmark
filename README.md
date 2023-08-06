@@ -50,7 +50,7 @@ Progress: 100%
         5 252 ops/s, ±4.47%   | 35.43% slower
 
     opusscript (no wasm):
-        1 504 ops/s, ±13.54%     | slowest, 81.51% slower
+        1 504 ops/s, ±13.54%  | slowest, 81.51% slower
 
 Finished 3 cases!
     Fastest: @discordjs/opus
