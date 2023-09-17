@@ -1,5 +1,16 @@
-import b from 'benny';
-import { createDjsEncoder, createOpusScriptAsmEncoder, createOpusScriptWasmEncoder, generateOpusSample } from './common.js';
+import * as mitata from 'mitata';
+
+// prettier-ignore
+import {
+    createDjsEncoder,
+    createMediaplexEncoder,
+    createOpusScriptAsmEncoder,
+    createOpusScriptWasmEncoder,
+    generateOpusSample,
+    createEvanOpusDecoder,
+    createEvanOpusDecoderWasm,
+    createSimdEvanOpusDecoder
+} from './common.js';
 
 const config = {
     FRAME_SIZE: 960,
@@ -7,29 +18,38 @@ const config = {
     CHANNELS: 2,
 };
 
+const mediaplexEncoder = createMediaplexEncoder(config);
 const nativeEncoder = createDjsEncoder(config);
 const wasmEncoder = createOpusScriptWasmEncoder(config);
 const asmEncoder = createOpusScriptAsmEncoder(config);
+const evanOpus = createEvanOpusDecoder(config);
+const evanOpusWasm = createEvanOpusDecoderWasm(config);
+const evanWasmOpus = createSimdEvanOpusDecoder(config);
 
 const SAMPLE = generateOpusSample();
 
-b.suite(
-    'OpusDecoder Benchmark',
-    b.add('@discordjs/opus', () => {
+mitata.group('OpusDecoder', () => {
+    mitata.bench('mediaplex', () => {
+        mediaplexEncoder.decode(SAMPLE);
+    });
+    mitata.bench('@discordjs/opus', () => {
         nativeEncoder.decode(SAMPLE);
-    }),
-    b.add('opusscript', () => {
+    });
+    mitata.bench('opusscript', () => {
         wasmEncoder.decode(SAMPLE);
-    }),
-    b.add('opusscript (no wasm)', () => {
+    });
+    mitata.bench('opusscript (no wasm)', () => {
         asmEncoder.decode(SAMPLE);
-    }),
-    b.cycle(),
-    b.complete(),
-    b.save({
-        format: "chart.html",
-        details: true,
-        file: "opus-decoder-benchmark",
-        folder: "./results"
-    }),
-);
+    });
+    mitata.bench('@evan/opus', () => {
+        evanOpus.decode(SAMPLE);
+    });
+    mitata.bench('@evan/opus (wasm)', () => {
+        evanOpusWasm.decode(SAMPLE);
+    });
+    mitata.bench('@evan/wasm', () => {
+        evanWasmOpus.decode(SAMPLE);
+    });
+});
+
+await mitata.run();

@@ -1,5 +1,15 @@
-import b from 'benny';
-import { createDjsEncoder, createOpusScriptAsmEncoder, createOpusScriptWasmEncoder, generatePCMSample } from './common.js';
+import * as mitata from 'mitata';
+// prettier-ignore
+import {
+    createDjsEncoder,
+    createMediaplexEncoder,
+    createOpusScriptAsmEncoder,
+    createOpusScriptWasmEncoder,
+    generatePCMSample,
+    createEvanOpusEncoder,
+    createEvanOpusEncoderWasm,
+    createSimdEvanOpusEncoder
+} from './common.js';
 
 const config = {
     FRAME_SIZE: 960,
@@ -7,29 +17,38 @@ const config = {
     CHANNELS: 2,
 };
 
+const mediaplexEncoder = createMediaplexEncoder(config);
 const nativeEncoder = createDjsEncoder(config);
 const wasmEncoder = createOpusScriptWasmEncoder(config);
 const asmEncoder = createOpusScriptAsmEncoder(config);
+const evanOpus = createEvanOpusEncoder(config);
+const evanOpusWasm = createEvanOpusEncoderWasm(config);
+const evanWasmOpus = createSimdEvanOpusEncoder(config);
 
 const SAMPLE = generatePCMSample(config.FRAME_SIZE * config.CHANNELS * 6);
 
-b.suite(
-    'OpusEncoder Benchmark',
-    b.add('@discordjs/opus', () => {
+mitata.group('OpusEncoder', () => {
+    mitata.bench('mediaplex', () => {
+        mediaplexEncoder.encode(SAMPLE);
+    });
+    mitata.bench('@discordjs/opus', () => {
         nativeEncoder.encode(SAMPLE);
-    }),
-    b.add('opusscript', () => {
+    });
+    mitata.bench('opusscript', () => {
         wasmEncoder.encode(SAMPLE, config.FRAME_SIZE);
-    }),
-    b.add('opusscript (no wasm)', () => {
+    });
+    mitata.bench('opusscript (no wasm)', () => {
         asmEncoder.encode(SAMPLE, config.FRAME_SIZE);
-    }),
-    b.cycle(),
-    b.complete(),
-    b.save({
-        format: "chart.html",
-        details: true,
-        file: "opus-encoder-benchmark",
-        folder: "./results"
-    }),
-);
+    });
+    mitata.bench('@evan/opus', () => {
+        evanOpus.encode(SAMPLE);
+    });
+    mitata.bench('@evan/opus (wasm)', () => {
+        evanOpusWasm.encode(SAMPLE);
+    });
+    mitata.bench('@evan/wasm', () => {
+        evanWasmOpus.encode(SAMPLE);
+    });
+});
+
+await mitata.run();

@@ -3,7 +3,6 @@
   "private": true,
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "type": "module",
   "scripts": {
     "bench": "node ./benchmark/encoder.js && node ./benchmark/decoder.js"
@@ -13,7 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.9.0",
-    "benny": "^3.7.1",
+    "@evan/opus": "^1.0.2",
+    "@evan/wasm": "^0.0.95",
+    "mediaplex": "^0.0.7",
+    "mitata": "^0.1.6",
     "opusscript": "^0.1.0"
   }
 }
