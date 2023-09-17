@@ -13,14 +13,23 @@ $ pnpm bench
 
 Benchmarking was done by using a constant sample of opus and pcm data. The benchmark was done among following packages using [mitata](https://npm.im/mitata) as the benchmarking library:
 
-#### [mediaplex](https://npm.im/mediaplex)
+### [mediaplex](https://npm.im/mediaplex)
 
-Mediaplex provides bindings for libopus 1.4 and is a drop-in replacement for [@discordjs/opus](https://npm.im/@discordjs/opus).
+Mediaplex provides native bindings to libopus 1.4 and is a drop-in replacement for [@discordjs/opus](https://npm.im/@discordjs/opus).
 
-- [@discordjs/opus](https://npm.im/@discordjs/opus)
-- [opusscript](https://npm.im/opusscript)
-- [@evan/opus](https://npm.im/@evan/opus)
-- [@evan/wasm](https://npm.im/@evan/wasm)
+### [@discordjs/opus](https://npm.im/@discordjs/opus)
+
+Native bindings to libopus v1.3 
+
+### [opusscript](https://npm.im/opusscript)
+
+JS bindings for libopus 1.4, ported with Emscripten.
+
+### [@evan/opus](https://npm.im/@evan/opus) & [@evan/wasm](https://npm.im/@evan/wasm)
+
+Fast opus bindings for node and browsers.
+
+---
 
 > Note: I ran this test on github codespaces, so the results may vary on your machine.
 
