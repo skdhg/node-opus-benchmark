@@ -59,6 +59,11 @@ summary for OpusEncoder
    2.65x faster than @evan/wasm
    2.88x faster than @evan/opus (wasm)
    18.96x faster than opusscript (no wasm)
+```
+
+### OpusDecoder
+
+```js
 cpu: AMD EPYC 7763 64-Core Processor
 runtime: node v20.6.1 (x64-linux)
 
